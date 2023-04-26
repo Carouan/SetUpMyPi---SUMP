@@ -1,0 +1,30 @@
+***********************************
+           SUMP Log File
+***********************************
+    				made by Carouan
+
+Paramètres de l'utilisateur depuis (Entrée clavier)(fichier fourni : nom + url)
+
+
+	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	Before IP : 					| After IP : 
+	Before Rpi Name :   			| After Rpi Name : 
+	Before SSH used port : 			| After SSH used port : 
+	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	WIFI Network(s) set :
+	
+		1.  SSID =
+			Password =
+		2.  SSID = 
+			Password =
+	
+	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		---			BACKUP 			---
+		Backup set on device = 
+		At =
+		---			MAJ				---
+		MAJ set every xx at yy
+		---			Reboot				---
+		Reboot set every xx at yy
+
+

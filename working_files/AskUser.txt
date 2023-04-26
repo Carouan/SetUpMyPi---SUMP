@@ -1,0 +1,25 @@
+OS Name : $name
+OS Version : $vers
+MAC Address : $mac
+# (Before=B) & (After=A) 
+B_IP : $bip
+A_IP : $aip
+B_Name : $bn
+A_Name : $an
+B_SSH : $bssh
+A_SSH  : $assh 
+Wifi_network_nbr : $wfnb
+SSID : $1ssid
+Password : $1pwd
+SSID : $2ssid
+Password : $2pwd
+BACKUP set : $back
+Set on device : $back_place			 
+Every : $backday
+At : $backhour
+MAJ set : $maj
+Every : $majday
+At : $majhour		
+REBOOT set : $reboot
+Every : $rebday
+At : $rebhour		
