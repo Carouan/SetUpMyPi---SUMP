@@ -9,7 +9,7 @@ Le but est de pouvoir ajouter plusieurs étapes de configuration essentielles ap
 - [X] 2. Attribution des droits d'éxecution.
 - [X] 3. Lancement du script. [SUMP.sh]
 Ce script est télécharger et lancer via la commande : 
-# wget -O SUMP.sh 'https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d73014512bf180e19df78cdec993/SUMP.sh' && chmod +x SUMP.sh && sudo bash SUMP.sh
+wget -O SUMP.sh 'https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d73014512bf180e19df78cdec993/SUMP.sh' && chmod +x SUMP.sh && sudo bash SUMP.sh
 
 1. [ ] Script principal.[SUMP.sh]
 
