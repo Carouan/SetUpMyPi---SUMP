@@ -8,7 +8,7 @@ User settings from : (Entrée clavier)(fichier fourni : nom + url)
 				Your Raspberry PI was configured.
 					OS : $name & Version : $vers
 					MAC Address : $mac
-
+			UPDATE : $up		| UPGRADE : $ug
 	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	Before IP : $bip				| After IP : $aip
 	Before Rpi Name : $bn  			| After Rpi Name : $an

@@ -1,25 +1,41 @@
-OS Name : $name
-OS Version : $vers
-MAC Address : $mac
-# (Before=B) & (After=A) 
-B_IP : $bip
-A_IP : $aip
-B_Name : $bn
-A_Name : $an
-B_SSH : $bssh
-A_SSH  : $assh 
-Wifi_network_nbr : $wfnb
-SSID : $1ssid
-Password : $1pwd
-SSID : $2ssid
-Password : $2pwd
-BACKUP set : $back
-Set on device : $back_place			 
-Every : $backday
-At : $backhour
-MAJ set : $maj
-Every : $majday
-At : $majhour		
-REBOOT set : $reboot
-Every : $rebday
-At : $rebhour		
+# Default values for variables
+
+# CONFIG
+name="Default OS Name"
+vers="Default OS Version"
+mac="Default MAC Address"
+actual_ip="Default IP"
+new_ip="0"
+default_name="Default Name"
+new_name="0"
+default_ssh="Default SSH"
+new_ssh="0"
+wifi_network_number="0"
+1ssid="SSID 1"
+1pwd="Password 1"
+2ssid="SSID 2"
+2pwd="Password 2"
+# END_CONFIG
+
+# BACKUP
+backup_set="y"
+backup_place="Default place for backup (USB)"			 
+backup_time="0 3 * * *"
+
+update_set="y"
+update_time="0 4 * * *"
+
+reboot_set="y"
+reboot_time="0 5 * * *"
+# END_BACKUP
+
+# NOIP
+noip="n"
+username="name"
+noippwd="pwd"
+# END_NOIP
+
+# DOCKER
+docker="n"
+dockerfile="link"
+# END_DOCKER
