@@ -1,9 +1,15 @@
 #!/bin/bash
 
+# ***************
+#  BACKUP SCRIPT
+# ***************
+    # Gather variables from 'BACKUP' to 'END_BACKUP' from settings.txt file
+        awk '/^# BACKUP$/,/^# END_BACKUP$/{if (!/^# BACKUP$/ && !/^# END_BACKUP$/) print}' settings.txt > temp_variables.txt
+        source temp_variables.txt
+        rm temp_variables.txt
 
-# *************
-# PARTIE BACKUP
-# *************
+
+
 # Installez mailutils si ce n'est pas déjà fait
 sudo apt-get update
 sudo apt-get install -y mailutils

@@ -3,15 +3,15 @@ Récapitulatif des étapes de paramétrages du raspberry pi post-install OS - a.
 ----------------------------------------------------------------------------------------------------
 
 Le but est de pouvoir ajouter plusieurs étapes de configuration essentielles après l'installation d'un OS sur un Raspberry Pi.
+The goal is to add multiples steps to fine tune the Pi after the OS installation 
 
-
-- [X] 1. Commande de téléchargement du script sur GitHub. (wget https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d73014512bf180e19df78cdec993/SUMP.sh)
-- [X] 2. Attribution des droits d'éxecution.
-- [X] 3. Lancement du script. [SUMP.sh]
-Ce script est télécharger et lancer via la commande : 
+- [X] 1. Download this script on GitHub. (wget https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d73014512bf180e19df78cdec993/SUMP.sh)
+- [X] 2. Give execution rights.
+- [X] 3. Run the script. [SUMP.sh]
+This script is downloaded and run with this command : 
 wget -O SUMP.sh 'https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d73014512bf180e19df78cdec993/SUMP.sh' && chmod +x SUMP.sh && sudo bash SUMP.sh
 
-1. [ ] Script principal.[SUMP.sh]
+1. [ ] Main Script.[SUMP.sh]
 
 	- [x] 1. Création du fichier de log
 	
