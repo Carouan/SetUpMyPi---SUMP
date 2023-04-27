@@ -190,8 +190,8 @@
 
 
     # 7. Run NO-IP install script if (si f.=Y) [noip.sh]
-    # 8. Lancement du script de Docker et docker-compose (si g.=Y) [setup_docker.sh]
-    # 9. Lancement du script de téléchargement et lancement des containeurs dockerfile.yml/docker-compose.yml (si h.=Y) [my_cont.sh]
+    # 8. Run Docker et docker-compose scripts (if $docker="Y") [setup_docker.sh]
+    # 9. Run script to download and run containeurs dockerfile.yml/docker-compose.yml (si h.=Y) [my_cont.sh]
 # **************************************************************************************************
 # Final steps    
     # 10. Clean up and display log file

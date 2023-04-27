@@ -13,18 +13,18 @@ wget -O SUMP.sh 'https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d7
 
 1. [ ] Script principal.[SUMP.sh]
 
-	- [ ] 1. Création du fichier de log
+	- [x] 1. Création du fichier de log
 	
-	- [ ] 2. Création du fichier de paramètres - AskUser.txt - Ou demande si il existe déjà pour le télécharger.
-		- [ ] a. Choix IP fixe ? Y/N - Choix
-		- [ ] b. Choix nom du raspberry pi ? Y/N - (hostname)
-		- [ ] c. Choix port SSH  ? Y/N - (A voir si in fine on ne changerai pas ça par la méthode avec certificat)
-		- [ ] d. Définir réseau(x) WIFI ? Y/N - SSID + pwd
-		- [ ] e. Choix d'un système de backup ? Y/N - (Pour l'instant juste une clé USB)
-			- [ ] 1. Choix de la fréquence du backup
-			- [ ] 2. Ajout commandes de sauvegarde à crontab (3:00 am)
-			- [ ] 3. Ajout les commandes de mise à jour à crontab (4:00 am)
-			- [ ] 4. Ajout les commandes de redémarrage à crontab (5:00 am)
+	- [x] 2. Création du fichier de paramètres - AskUser.txt - Ou demande si il existe déjà pour le télécharger.
+		- [x] a. Choix IP fixe ? Y/N - Choix
+		- [x] b. Choix nom du raspberry pi ? Y/N - (hostname)
+		- [x] c. Choix port SSH  ? Y/N - (A voir si in fine on ne changerai pas ça par la méthode avec certificat)
+		- [x] d. Définir réseau(x) WIFI ? Y/N - SSID + pwd
+		- [x] e. Choix d'un système de backup ? Y/N - (Pour l'instant juste une clé USB)
+			- [x] 1. Choix de la fréquence du backup
+			- [x] 2. Ajout commandes de sauvegarde à crontab (3:00 am)
+			- [x] 3. Ajout les commandes de mise à jour à crontab (4:00 am)
+			- [x] 4. Ajout les commandes de redémarrage à crontab (5:00 am)
 		- [ ] f. Proposition de l'installation de NO-IP Y/N - Ask credentials
 		- [ ] g. Proposition d'installation de Docker et docker-compose ? Y/N
 		- [ ] h. Proposition de téléchargement et de lancement de dockerfile.yml/docker-compose.yml
@@ -42,8 +42,6 @@ wget -O SUMP.sh 'https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d7
 	
 	- [ ] 7. Lancement du script de téléchargement et lancement des containeurs dockerfile.yml/docker-compose.yml (si h.=Y) [my_cont.sh]
 
-	- [ ] 8. Finalisation du script & Nettoyage
-		- [ ] a. Suppression de tous les fichiers téléchargés et du fichier paramètres user (AskUser.txt).
-			! En ce compris SUMP.sh
-		- [ ] b. Cloture du fichier log.
-		- [ ] c. Affichage du fichier log.
+	- [x] 8. Finalisation du script & Nettoyage
+		- [x] a. Suppression de tous les fichiers téléchargés et du fichier paramètres user (AskUser.txt).
+		- [x] b. Affichage du fichier log.
