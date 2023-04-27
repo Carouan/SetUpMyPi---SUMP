@@ -1,78 +1,59 @@
 #!/bin/bash
 
-# Définir le fichier de log et y ajouter la date et l'heure
-LOG_FILE="config-raspberry-$(date '+%Y%m%d-%H%M%S').log"
-exec > >(tee -a "$LOG_FILE") 2>&1
-
 # Fonction pour afficher les messages à l'utilisateur
 function echo_user() {
   echo -e "\033[1;32m$1\033[0m"
 }
 
-# Fonction pour télécharger et lancer un autre script
-function run_script() {
-    script_url=$1
-    zip_name=$(basename $script_url)
-    script_name="${zip_name%.zip}.sh"
-    # Télécharger le fichier zip
-    wget $script_url -O $zip_name
-    # Décompresser le fichier téléchargé
-    unzip $zip_name
-    # Rendre le script exécutable
-    chmod +x $script_name
-    # Lancer le script
-    ./$script_name
-    # Vérifier si le script a été exécuté avec succès
-    if [ $? -eq 0 ]; then
-        echo "Le script $script_name s'est terminé avec succès." | tee -a $log_file
-        return 0
-    else
-        echo "Erreur: le script $script_name a échoué." | tee -a $log_file
-        return 1
-    fi
-}
-
 # ************************************************
 # MODIFICATIONS BASIQUES ESSENTIELLES ET CRITIQUES
 # ************************************************
-# Update/Upgrade
-echo_user "Mise à jour du système en cours..."
-sudo apt update -y && sudo apt upgrade -y
-if [ $? -eq 0 ]; then
-  echo_user "Mise à jour terminée avec succès."
-else
-  echo_user "Erreur lors de la mise à jour."
-fi
-# SET FIXED IP
-function configurer_ip_fixe() {
-    # Fixer l'IP
-    echo "Configuration de l'adresse IP en cours..."
+# Basic tasks : update/upgrade & gather variables from AskUser.txt file
+    # Update/Upgrade
+    echo_user "Mise à jour du système en cours..."
+    sudo apt update -y && sudo apt upgrade -y
+    if [ $? -eq 0 ]; then
+    # Replace $up in sump_logfile.log file by "OK" in green
+    sed -i 's/$up/\033[32mOK\033[0m/g' sump_logfile.log
+    else
+    # Replace $up in sump_logfile.log file by "KO" in red
+    sed -i 's/$up/\033[31mKO\033[0m/g' sump_logfile.log
+    fi
+
+    # Gather variables from 'OS Name' to '2pwd' from AskUser.txt file
+    awk '/^# CONFIG$/,/^# END_CONFIG$/{if (!/^# CONFIG$/ && !/^# END_CONFIG$/) print}' AskUser.txt > temp_variables.txt
+    source temp_variables.txt
+    rm temp_variables.txt
+
+
+# SET STATIC IP
+function config_static_ip() {
+    # Get $aip from AskUser.txt file and set it to variable
+    actual_ip=$(cat AskUser.txt | grep "actual_ip" | cut -d "=" -f2)
+    # Modify the file /etc/dhcpcd.conf    
     sudo sed -i 's/^#interface eth0$/interface eth0/' /etc/dhcpcd.conf
     sudo sed -i '$ a\static ip_address=192.168.1.42/24' /etc/dhcpcd.conf
     sudo sed -i '$ a\static routers=192.168.1.1' /etc/dhcpcd.conf
+    # Restart the service dhcpcd
     sudo systemctl daemon-reload
     sudo systemctl restart dhcpcd
+    # Check if the static IP is set by comparing the current IP with the one set in the file /etc/dhcpcd.conf
+    actual_ip=$(hostname -I | awk '{print $1}')
+    if [ "$actual_ip" == "$aip" ]; then
+        echo "Static IP is correctly set to : $aip"
+    else
+        echo "Error : Actual IP address is $actual_ip, and not $aip"
+    fi
+}
+# Check if user want to change the IP address (if $new_ip="0" then no)
+if [ "$new_ip" != "0" ]; then
+    config_static_ip
+fi
 
-    if [ $? -eq 0 ]; then
-        echo "Configuration de l'adresse IP terminée avec succès."
-    else
-        echo "Erreur lors de la configuration de l'adresse IP."
-    fi
-}
-function verifier_ip() {
-    ip_actuelle=$(hostname -I | awk '{print $1}')
-    if [ "$ip_actuelle" == "192.168.1.42" ]; then
-        echo "L'adresse IP a été correctement configurée à 192.168.1.42"
-    else
-        echo "Erreur : l'adresse IP actuelle est $ip_actuelle, et non 192.168.1.42"
-    fi
-}
-configurer_ip_fixe
-verifier_ip
 # SET FIXED HOSTNAME 
-function renommer_raspberry_pi() {
-    # Renommer le Raspberry Pi
-    echo "Renommage du Raspberry Pi en cours..."
+function rename_raspi() {
+    # Rename the Raspberry Pi
+
     sudo sed -i 's/raspberrypi/RaspiTwo/g' /etc/hostname
     sudo sed -i 's/raspberrypi/RaspiTwo/g' /etc/hosts
     if [ $? -eq 0 ]; then
