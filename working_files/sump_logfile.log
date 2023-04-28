@@ -23,7 +23,9 @@ User settings from : Keyboard_FileName
 				Before Rpi Name : $bn  			| New Rpi Name : $an
 				Before SSH used port : $bssh	| New SSH used port : $assh 
 	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-			WIFI Network(s) set : $wfnb
+											WIFI NETWORK(s)
+	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+			WIFI Network(s) set : $wifi_network_number
 				1  SSID = $1ssid
 					Password = $1pwd
 				2  SSID = $2ssid
@@ -31,7 +33,7 @@ User settings from : Keyboard_FileName
 	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	----------	BACKUP	---------|----------	MAJ	---------|---------	REBOOT	---------|
 	Set on device = $back_place	 | MAJ set  ON - OFF 		 | Reboot set ON - OFF       |
-	Every $backday at $backhour	 | Every $majday at $majhour | Every $rebday at $rebhour |
+	Every backup_time       	 | Every $majday at $majhour | Every $rebday at $rebhour |
 
 	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 				Following aps are installed and working

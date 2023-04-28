@@ -31,6 +31,11 @@
             sed -i "s/\$old_ip/$old_ip/" settings.txt
             sed -i "s/\$default_name/$default_name/" settings.txt
             sed -i "s/\$default_ssh/$default_ssh/" settings.txt
+            # Replace variables $name, $vers and $mac in green inthe file sump_logfile.log
+            sed -i "s/NAME/\033[32m$name\033[0m/" sump_logfile.log
+            sed -i "s/VERS/\033[32m$vers\033[0m/" sump_logfile.log
+            sed -i "s/MAC/\033[32m$mac\033[0m/" sump_logfile.log
+            # ???  Replace variables $old_ip, $default_name and $default_ssh in red in the file sump_logfile.log
         }
         get_default_values
     # 4. Function to gather all users choices to set the settings.txt file
@@ -73,22 +78,38 @@
                         read ssh_port
                         sed -i "s/\$new_ssh/$ssh_port/" settings.txt
                     fi
-                # 1.5. Want to register WIFI networks. And how much networks ? (Make a loop if more than one network)
+                # 1.5. Want to register WIFI networks. And how many networks ? (Make a loop if more than one network)
                     # IF YES, ask for SSID and password and save it in settings.txt file in place of $1ssid and $1pwd
                     echo "Would you like to register a WIFI network ? (Y/N)"
                     read answer_wifi
                     if [ "$answer_wifi" = "Y" ] || [ "$answer_wifi" = "y" ]; then
                         echo "How many networks do you want to register ?"
-                        read $wifi_network_number
+                        read wifi_network_number
+                        # Replace the number of networks in green in settings.txt file in place of $wifi_network_number
+                        sed -i "s/\$wifi_network_number/$wifi_network_number/" settings.txt
+
+                        # Make a loop to ask for SSID and password for each network
                         for ((i=1; i<=$wifi_network_number; i++)); do
                             echo "Please enter the SSID of the network $i : "
                             read ssid
                             echo "Please enter the password of the network $i : "
                             read pass
-                            sed -i "s/\$ssid/$ssid/" settings.txt
-                            sed -i "s/\$pass/$pass/" settings.txt
+                            # Add the SSID and password in settings.txt file after $wifi_network_number
+                            sed -i "/\$wifi_network_number/a\\n\033[32m$(($i))SSID = $ssid\033[0m\n\033[32m\tPassword = $pass\033[0m" settings.txt
+                        done
+
+                        # Modify sump_logfile.log to adapt the part according to the number of WIFI networks (with identifiers)
+                        sed -i "s/\$wifi_network_number/\033[32m$wifi_network_number\033[0m/" sump_logfile.log
+                        for ((i=1; i<=$wifi_network_number; i++)); do
+                            ssid_var="${i}ssid"
+                            pass_var="${i}pwd"
+                            ssid_val=$(sed -n -e "s/^.*${ssid_var} = //p" settings.txt)
+                            pass_val=$(sed -n -e "s/^.*${pass_var} = //p" settings.txt)
+                            sed -i "s/\$${ssid_var}/\033[32m${ssid_val}\033[0m/" sump_logfile.log
+                            sed -i "s/\$${pass_var}/\033[32m${pass_val}\033[0m/" sump_logfile.log
                         done
                     fi
+
 
                 # 1.6. Want to set a backup routine. (Y/N - $backup_set)(In a first time only a USB key - $backup_place)
                     # IF YES, ask user for the frequency backup and replace it in settings.txt file values $backup_set, $backup_place, $backup_time
@@ -167,41 +188,68 @@
         # Run script
         $script_name="config_raspi.sh"
         ./$script_name
-        # Check if script has been executed successfully
+        # If script has been executed successfully set CONFIGURATION in green in sump_logfile.log else in red.
         if [ $? -eq 0 ]; then
-            echo "Le script $script_name s'est terminé avec succès." | tee -a $log_file
+            sed -i 's/CONFIGURATION/\033[32mCONFIGURATION\033[0m/g' sump_logfile.log
             return 0
         else
-            echo "Erreur: le script $script_name a échoué." | tee -a $log_file
+            sed -i 's/CONFIGURATION/\033[31mCONFIGURATION\033[0m/g' sump_logfile.log
             return 1
         fi    
         # a. Each step will be checked and controlled to ensure that everything is in order.
         # b. Each step will be logged in the log file.
         # c. If an error occurs, the script will be stopped and the user will be informed.
 
-    # 6. Run backup.sh file to set the backup of Raspberry Pi
+    # 6. Run backup script (if backup_set="y") [backup.sh]
+        if [ "$backup_set" = "y" ]; then
+            # Run script
+            $script_name="backup.sh"
+            ./$script_name
+            # If script has been executed successfully set BACKUP in green in sump_logfile.log else in red.
+            if [ $? -eq 0 ]; then
+                sed -i 's/BACKUP/\033[32mBACKUP\033[0m/g' sump_logfile.log
+                return 0
+            else
+                sed -i 's/BACKUP/\033[31mBACKUP\033[0m/g' sump_logfile.log
+                return 1
+            fi
+        fi
+
         # a. Each step will be checked and controlled to ensure that everything is in order.
         # b. Each step will be logged in the log file.
         # c. If an error occurs, the script will be stopped and the user will be informed.
 
 
-    # 7. Run NO-IP install script if (si f.=Y) [noip.sh]
-    # 8. Run Docker et docker-compose scripts (if $docker="Y") [setup_docker.sh]
+    # --- *** --- NO-IP --- *** --- #
+    # 7. Run NO-IP install script (if $noip !="n") [noip.sh]
+        if [ "$noip" != "n" ]; then
+            # Run script
+            $script_name="noip.sh"
+            ./$script_name
+        fi
+
+    # --- *** --- DOCKER --- *** --- #
+    # 8. Run Docker et docker-compose scripts (if $docker !="n") [setup_docker.sh]
+        if [ "$docker" != "n" ]; then
+            # Run script
+            $script_name="setup_docker.sh"
+            ./$script_name
+        fi
     # 9. Run script to download and run containeurs dockerfile.yml/docker-compose.yml (si h.=Y) [my_cont.sh]
-        # Check in settings.txt file if $dockerfile !="link"
-        # If $dockerfile="link", run my_cont.sh script
+        # Check if setup_docker.sh has been executed successfully
+        if [ $? -eq 0 ]; then
+            echo "Le script $script_name s'est terminé avec succès." | tee -a $log_file
+            return 0
+        else
+            echo "Erreur: le script $script_name a échoué." | tee -a $log_file
+            return 1
+        fi        
+        
+        # Check in settings.txt file if $dockerfile !="link", if yes run my_cont.sh
         if [ "$dockerfile" != "link" ]; then
             # Run script
             $script_name="my_cont.sh"
             ./$script_name
-            # Check if script has been executed successfully
-            if [ $? -eq 0 ]; then
-                echo "Le script $script_name s'est terminé avec succès." | tee -a $log_file
-                return 0
-            else
-                echo "Erreur: le script $script_name a échoué." | tee -a $log_file
-                return 1
-            fi
         fi
         
 
@@ -222,5 +270,4 @@
             echo -e "$(cat /home/$user/sump_logfile.log)"
 
 # Envoyer le fichier de log par email
-# echo_user "Envoi du fichier de log par email..."
 # echo "Veuillez trouver ci-joint le fichier de log de la configuration du Raspberry Pi." | mail -s "Rapport de configuration du Raspberry Pi" -a "$LOG_FILE" baudoux.sebastien@gmail.com

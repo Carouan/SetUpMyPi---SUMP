@@ -1,14 +1,15 @@
 # Default values for variables
 
-# CONFIG
 name="Default OS Name"
 vers="Default OS Version"
 mac="Default MAC Address"
+
+# CONFIG
 actual_ip="Default IP"
 new_ip="0"
 default_name="Default Name"
 new_name="0"
-default_ssh="Default SSH"
+default_ssh="22"
 new_ssh="0"
 wifi_network_number="0"
 1ssid="SSID 1"
@@ -31,6 +32,7 @@ reboot_time="0 5 * * *"
 
 # NOIP
 noip="n"
+domain="*"
 username="name"
 noippwd="pwd"
 # END_NOIP
