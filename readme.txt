@@ -49,3 +49,61 @@ Le but est de pouvoir ajouter plusieurs étapes de configuration essentielles ap
 				! En ce compris SUMP.sh
 			b. Cloture du fichier log.
 			c. Affichage du fichier log.
+
+
+
+
+
+
+
+SetUpMyPi---SUMP/
+├── sump.sh               # Script principal (détecte mode d'affichage, gère le flow)
+├── ui/
+│   ├── menu.sh           # Affiche les menus (dialog ou texte selon mode)
+│   └── helpers.sh        # Fonctions partagées : afficher message, confirmer, etc.
+├── modules/
+│   ├── secure_ssh.sh     # Contient uniquement la logique système
+│   └── install_docker.sh
+├── settings.txt          # Paramètres persistants
+├── logs/
+│   └── sump.log
+
+
+
+00_SysUp.sh
+01_Sec_SSH.sh
+02_Sec_Host.sh
+03_BasFig.sh
+04_DynIp.sh
+05_SetBackup.sh
+06_Finally_Utility_Thinks.sh
+
+
+
+
+Ordre | Nom de script | Titre / Rôle principal | Auto | Remarques
+00 | 00_SysUp.sh | Mise à jour du système | yes | apt update, upgrade, reboot, flag de reprise
+01 | 01_Sec_SSH.sh | Sécurisation SSH de base | no | User sudo, clés, désactivation root
+02 | 02_Sec_Host.sh | Sécurité du système : fail2ban + ufw | yes | Active UFW avec port SSH uniquement, fail2ban avec conf sshd
+03 | 03_BasFig.sh | Configuration de base du serveur | no | Nom d’hôte, IP fixe, DNS local
+04 | 04_DynIp.sh | DNS dynamique (DuckDNS) | no | Script + cron 5 min
+05 | 05_SetBackup.sh | Mise en place des sauvegardes automatisées | no | Choix dossier, fréquence, rétention
+06 | 06_Finally_Utility_Thinks.sh | Installation finale d’outils serveur : Docker, monitoring… | no | Là où tu définis "ce que fera ton serveur"
+
+
+
+00 → toujours exécuté automatiquement, en tête
+01 et 02 → sécurité immédiate
+03 et 04 → config réseau locale + exposition DNS
+05 → tu assures la résilience avant toute prod
+06 → tu construis la valeur métier
+
+
+
+# Titre: ...
+# Catégorie: ...
+# Auto: yes|no
+# Ordre: 00
+
+
+

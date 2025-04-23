@@ -12,12 +12,14 @@
 User settings from : Keyboard_FileName
 
 								Your Raspberry PI was configured.
+								  RPi $nbr Model $model Rev $rev
+									   CPU : $cpu | RAM : $ram
 									OS : $name & Version : $vers
 									MAC Address : $mac
 										UPDATE  |  UPGRADE
 
 	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-										CONFIGURATION (green/red)	
+										CONFIGURATION	
 	*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 				Before IP : $bip				| New IP : $aip
 				Before Rpi Name : $bn  			| New Rpi Name : $an

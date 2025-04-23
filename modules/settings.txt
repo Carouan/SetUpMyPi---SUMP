@@ -20,7 +20,7 @@ wifi_network_number="0"
 
 # BACKUP
 backup_set="y"
-backup_place="Default place for backup (USB)"			 
+backup_place="Default place for backup (USB)"
 backup_time="0 3 * * *"
 
 update_set="y"
