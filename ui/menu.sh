@@ -62,25 +62,6 @@ test_menu() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Test direct depuis terminal
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   INTERFACE_MODE="text" # ou "dialog" si installé
