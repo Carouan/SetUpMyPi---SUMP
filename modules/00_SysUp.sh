@@ -5,18 +5,20 @@ if grep -q "UPDATE_DONE=true" settings.txt; then
   exit 0
 fi
 
+LOG_FILE="sump_logfile.log"
+source ui/helpers.sh
+
 echo "Mise à jour du système en cours..."
 apt update && apt full-upgrade -y
 
 # Ajouter une ligne dans les logs
-echo "$(date '+%F %T') - Système mis à jour." >> sump_logfile.log
+log_msg "Système mis à jour."
 
 # Marquer l'étape comme terminée
 echo "UPDATE_DONE=true" >> settings.txt
 
 # Demander à redémarrer
-read -p "Redémarrer maintenant pour appliquer les mises à jour ? [O/n] " REBOOT
-if [[ "$REBOOT" =~ ^[OoYy]?$ ]]; then
+if confirm_prompt "Redémarrer maintenant pour appliquer les mises à jour ?"; then
   touch /tmp/sump_autorestart.flag
   reboot
 fi

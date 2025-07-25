@@ -9,14 +9,11 @@
 
 set -e  # Stoppe le script en cas d'erreur
 
-log_file="/var/log/secure_ssh_setup.log"
-
-log() {
-  echo "$(date +'%F %T') - $1" | tee -a "$log_file"
-}
+LOG_FILE="/var/log/secure_ssh_setup.log"
+source ui/helpers.sh
 
 if [[ $EUID -ne 0 ]]; then
-  log "Ce script doit être exécuté en tant que root."
+  log_msg "Ce script doit être exécuté en tant que root."
   exit 1
 fi
 
@@ -26,7 +23,7 @@ read -p "Nom du nouvel utilisateur avec sudo : " NEW_USER
 # 2. Créer le compte et lui donner les droits sudo
 adduser "$NEW_USER"
 usermod -aG sudo "$NEW_USER"
-log "Utilisateur $NEW_USER créé et ajouté au groupe sudo."
+log_msg "Utilisateur $NEW_USER créé et ajouté au groupe sudo."
 
 # 3. Configurer la clé SSH
 mkdir -p /home/$NEW_USER/.ssh
@@ -35,7 +32,7 @@ read -p "Colle la clé publique SSH (ssh-ed25519 ou ssh-rsa) : " SSH_KEY
 echo "$SSH_KEY" > /home/$NEW_USER/.ssh/authorized_keys
 chmod 600 /home/$NEW_USER/.ssh/authorized_keys
 chown -R $NEW_USER:$NEW_USER /home/$NEW_USER/.ssh
-log "Clé SSH ajoutée pour $NEW_USER."
+log_msg "Clé SSH ajoutée pour $NEW_USER."
 
 # 4. Demander un nouveau port SSH
 read -p "Quel port SSH veux-tu utiliser (autre que 22) ? " NEW_PORT
@@ -44,7 +41,7 @@ read -p "Quel port SSH veux-tu utiliser (autre que 22) ? " NEW_PORT
 SSHD_CONFIG="/etc/ssh/sshd_config"
 BACKUP="$SSHD_CONFIG.bak.$(date +%F-%H%M%S)"
 cp $SSHD_CONFIG $BACKUP
-log "Sauvegarde de sshd_config : $BACKUP"
+log_msg "Sauvegarde de sshd_config : $BACKUP"
 
 # Supprimer les lignes existantes
 sed -i '/^#\?Port /d' $SSHD_CONFIG
@@ -60,23 +57,23 @@ PermitRootLogin no
 PasswordAuthentication no
 EOF
 
-log "sshd_config mis à jour."
+log_msg "sshd_config mis à jour."
 
 # 6. Verrouiller le mot de passe root
 passwd -l root
-log "Mot de passe root verrouillé."
+log_msg "Mot de passe root verrouillé."
 
 # 7. Vérifier la syntaxe SSH avant redémarrage
 if sshd -t; then
   systemctl restart sshd
-  log "Service SSH redémarré avec succès."
+  log_msg "Service SSH redémarré avec succès."
 else
-  log "Erreur dans sshd_config. Annulation du redémarrage SSH."
+  log_msg "Erreur dans sshd_config. Annulation du redémarrage SSH."
   mv "$BACKUP" "$SSHD_CONFIG"
   exit 1
 fi
 
-log "Connexion root désactivée, port SSH : $NEW_PORT."
+log_msg "Connexion root désactivée, port SSH : $NEW_PORT."
 echo
 cat <<END
 -------------------------------------------------------------
