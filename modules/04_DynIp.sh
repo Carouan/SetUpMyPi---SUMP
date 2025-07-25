@@ -7,10 +7,7 @@ set -e
 
 LOG_FILE="logs/sump.log"
 SETTINGS="settings.txt"
-
-log() {
-  echo "$(date +'%F %T') - $1" | tee -a "$LOG_FILE"
-}
+source ui/helpers.sh
 
 echo
 echo "Configuration d’un service DNS dynamique (IP fixe virtuelle)"
@@ -35,13 +32,13 @@ echo url="https://www.duckdns.org/update?domains=$DUCK_SUBDOMAIN&token=$DUCK_TOK
 EOF
 
 chmod +x "$DUCK_SCRIPT"
-log "Script DuckDNS créé à $DUCK_SCRIPT"
+log_msg "Script DuckDNS créé à $DUCK_SCRIPT"
 
 # Créer tâche cron toutes les 5 minutes
 CRON_FILE="/etc/cron.d/duckdns"
 echo "*/5 * * * * root $DUCK_SCRIPT > /dev/null 2>&1" > "$CRON_FILE"
 
-log "Tâche cron créée pour mettre à jour l’IP DuckDNS toutes les 5 minutes."
+log_msg "Tâche cron créée pour mettre à jour l’IP DuckDNS toutes les 5 minutes."
 
 echo
 echo "✅ DuckDNS est configuré et actif."

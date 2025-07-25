@@ -7,16 +7,13 @@ set -e
 
 LOG_FILE="logs/sump.log"
 SETTINGS="settings.txt"
-
-log() {
-  echo "$(date +'%F %T') - $1" | tee -a "$LOG_FILE"
-}
+source ui/helpers.sh
 
 # Changement du nom d'hôte
 read -rp "Nom à donner au serveur (ex: monserveur) : " HOSTNAME
 echo "$HOSTNAME" > /etc/hostname
 sed -i "s/127.0.1.1.*/127.0.1.1\t$HOSTNAME/" /etc/hosts
-log "Nom du serveur changé en $HOSTNAME"
+log_msg "Nom du serveur changé en $HOSTNAME"
 echo "HOSTNAME=$HOSTNAME" >> "$SETTINGS"
 
 # Choix d'une interface
@@ -39,13 +36,13 @@ static routers=$GATEWAY
 static domain_name_servers=$DNS
 EOF
 
-log "IP statique configurée sur $IFACE ($IP)"
+log_msg "IP statique configurée sur $IFACE ($IP)"
 echo "INTERFACE=$IFACE" >> "$SETTINGS"
 echo "STATIC_IP=$IP" >> "$SETTINGS"
 
 # Redémarrage du service réseau
 systemctl restart dhcpcd
-log "Redémarrage de dhcpcd"
+log_msg "Redémarrage de dhcpcd"
 
 echo
 echo "Configuration terminée."
