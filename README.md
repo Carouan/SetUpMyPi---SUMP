@@ -19,37 +19,24 @@ wget -O SUMP.sh 'https://github.com/Nauorac/SetUpMyPi---SUMP/blob/be8722a17298d7
 		- [x] b. Choice raspberry pi name ? Y/N - (hostname)
 		- [x] c. Choice SSH port ? Y/N - (To see if in fine one would not change that by the method with certificate)
 		- [x] d. Define WIFI network(s)? Y/N - SSID + pwd
-
-		- [x] e. Choice of a backup system ? Y/N - (For the moment just a USB key)
+		- [x] e. Choice a backup policy ? Y/N - (For the moment just a USB key)
 			- [x] 1. Choose the frequency of the backup
 			- [x] 2. Add backup commands to crontab (3:00 am)
 			- [x] 3. Add update commands to crontab (4:00 am)
 			- [x] 4. Add restart commands to crontab (5:00 am)
-
-
 		- [x] f. Proposed installation of (NO-IP)duckdns Y/N - Ask credentials
-
 		- [x] g. Proposed installation of Docker and docker-compose ? Y/N
-
 		- [x] h. Proposal to download and run dockerfile.yml/docker-compose.yml
-
 	- [x] 3. Launching the functions taking up points a, b, c, d. [config_raspi.sh]
 		- [ ] a. Each step will be checked to make sure that everything is in order.
-
 	- [ ] 4. Launch the functions for point e. [backup.sh]
 		- [ ] a. Check and control to make sure that everything is in order.
 	- [ ] 5. Launch the NO-IP installation script (if f.=Y) [noip.sh]
-
 	- [ ] 6. Launch the Docker and docker-compose script (if g.=Y) [setup_docker.sh] [ ] 7.
-
 	- [ ] 7. Launch the download script and launch the dockerfile.yml/docker-compose.yml containers (if h.=Y) [my_cont.sh] [ ] 8.
-
 	- [x] 8. Finalize the script & clean up
 		- [x] a. Delete all uploaded files and the user settings file (AskUser.txt).
 		- [x] b. Display the log file.
-
-
-
 
 Ordre | Nom de script | Titre / Rôle principal | Auto | Remarques
 00 | 00_SysUp.sh | Mise à jour du système | yes | apt update, upgrade, reboot, flag de reprise
@@ -59,13 +46,5 @@ Ordre | Nom de script | Titre / Rôle principal | Auto | Remarques
 04 | 04_DynIp.sh | DNS dynamique (DuckDNS) | no | Script + cron 5 min
 05 | 05_SetBackup.sh | Mise en place des sauvegardes automatisées | no | Choix dossier, fréquence, rétention
 06 | 06_Finally_Utility_Thinks.sh | Installation finale d’outils serveur : Docker, monitoring… | no | Là où tu définis "ce que fera ton serveur"
-
-
-
-
-
-
-
-
 
 
